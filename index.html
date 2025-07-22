@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Responsive Spectacles with Eye Tracking</title>
+  <title>Shinchan Spectacles Eye Tracking</title>
   <style>
     * {
       margin: 0;
@@ -41,8 +41,6 @@
     .eye {
       width: 60px;
       height: 56px;
-      right: 1px;
-      text-align: center;
       background: radial-gradient(circle at 30% 30%, white 5%, #3b2f2f 15%, #1a1a1a 80%);
       border: 2px solid black;
       border-radius: 50%;
@@ -71,11 +69,19 @@
       border-radius: 50%;
       position: absolute;
     }
+
+    /* Mobile adjustment for smaller pupils */
+    @media (max-width: 600px) {
+      .pupil {
+        width: 18px;
+        height: 18px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="shinchan.jpg" alt="SHINCHAN"> <!-- make sure to fix image path for web -->
+    <img src="shinchan.jpg" alt="Shinchan" />
     <div class="spectacles">
       <div class="eye"><div class="pupil"></div></div>
       <div class="eye"><div class="pupil"></div></div>
@@ -96,21 +102,23 @@
         const dy = clientY - eyeCenterY;
 
         const angle = Math.atan2(dy, dx);
-        const maxDistance = (rect.width / 2) - (pupil.offsetWidth / 2);
 
-        const x = Math.cos(angle) * maxDistance * 0.4;
-        const y = Math.sin(angle) * maxDistance * 0.4;
+        // Responsive max movement for any screen size
+        const maxDistance = Math.min(rect.width, rect.height) / 4;
+
+        const x = Math.cos(angle) * maxDistance;
+        const y = Math.sin(angle) * maxDistance;
 
         pupil.style.transform = `translate(${x}px, ${y}px)`;
       });
     }
 
-    // Mouse support
+    // Desktop: mouse support
     document.addEventListener('mousemove', (event) => {
       handleEyeMovement(event.clientX, event.clientY);
     });
 
-    // Touch support for mobile
+    // Mobile: touch support
     document.addEventListener('touchmove', (event) => {
       if (event.touches.length > 0) {
         const touch = event.touches[0];
